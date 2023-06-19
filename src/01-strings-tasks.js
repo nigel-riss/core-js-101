@@ -202,8 +202,15 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  const drawRow = (rowWidth) => `│${Array(rowWidth - 2).fill(' ').join('')}│\n`;
+
+  const topRow = `┌${Array(width - 2).fill('─').join('')}┐\n`;
+  const innerRows = Array(height - 2).fill(drawRow(width)).join('');
+  const bottomRow = `└${Array(width - 2).fill('─').join('')}┘\n`;
+
+
+  return topRow + innerRows + bottomRow;
 }
 
 
@@ -223,9 +230,20 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const CHAR_MAP = 'NOPQRSTUVWXYZABCDEFGHIJKLM[\\]^_`nopqrstuvwxyzabcdefghijklm';
+  const encryptChar = (char) => (
+    char.charCodeAt(0) < 65 || char.charCodeAt(0) > 122
+      ? char
+      : CHAR_MAP[char.charCodeAt(0) - 65]
+  );
+
+  return str.split('')
+    .map(encryptChar)
+    .join('');
 }
+
+console.log(encodeToRot13('hello'));
 
 /**
  * Returns true if the value is string; otherwise false.
