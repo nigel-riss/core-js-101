@@ -76,6 +76,7 @@ function getArrayOfPositives(arr) {
   return arr.slice().filter((el) => el > 0);
 }
 
+
 /**
  * Returns the array with strings only in the specified array (in original order)
  *
@@ -90,6 +91,7 @@ function getArrayOfPositives(arr) {
 function getArrayOfStrings(arr) {
   return arr.slice().filter((el) => typeof el === 'string');
 }
+
 
 /**
  * Removes falsy values from the specified array
@@ -107,6 +109,7 @@ function getArrayOfStrings(arr) {
 function removeFalsyValues(arr) {
   return arr.slice().filter((el) => !!el);
 }
+
 
 /**
  * Returns the array of uppercase strings from the specified array
@@ -137,6 +140,7 @@ function getUpperCaseStrings(arr) {
 function getStringsLength(arr) {
   return arr.map((el) => el.length);
 }
+
 
 /**
  * Inserts the item into specified array at specified index
@@ -208,6 +212,7 @@ function toCsvText(arr) {
   return arr.map((el) => el.join(',')).join('\n');
 }
 
+
 /**
  * Transforms the numeric array into the according array of squares:
  *   f(x) = x * x
@@ -238,9 +243,14 @@ function toArrayOfSquares(arr) {
  *   [ 0, 0, 0, 0, 0]         => [ 0, 0, 0, 0, 0]
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
-function getMovingSum(/* arr */) {
-  throw new Error('Not implemented');
+function getMovingSum(arr) {
+  let summ = 0;
+  return arr.map((num) => {
+    summ += num;
+    return summ;
+  });
 }
+
 
 /**
  * Returns every second item from the specified array:
@@ -272,8 +282,10 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  return arr
+    .map((el, index) => Array(index + 1).fill(el))
+    .flat();
 }
 
 
@@ -312,6 +324,7 @@ function getPositivesCount(arr) {
   return arr.filter((el) => typeof el === 'number' && el > 0).length;
 }
 
+
 /**
  * Sorts digit names
  *
@@ -325,9 +338,23 @@ function getPositivesCount(arr) {
  *   [ 'nine','eight','nine','eight'] => [ 'eight','eight','nine','nine']
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const digitNames = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+
+  return arr.sort((a, b) => digitNames.indexOf(a) - digitNames.indexOf(b));
 }
+
 
 /**
  * Returns the sum of all items in the specified array of numbers
@@ -345,6 +372,7 @@ function getItemsSum(arr) {
   return arr.reduce((acc, curr) => acc + curr, 0);
 }
 
+
 /**
  * Returns the number of all falsy value in the specified array
  *
@@ -360,6 +388,7 @@ function getItemsSum(arr) {
 function getFalsyValuesCount(arr) {
   return arr.filter((el) => !el).length;
 }
+
 
 /**
  * Returns a number of all occurrences of the specified item in an array
@@ -378,6 +407,7 @@ function getFalsyValuesCount(arr) {
 function findAllOccurrences(arr, item) {
   return arr.filter((el) => el === item).length;
 }
+
 
 /**
  * Concatenates all elements from specified array into single string with ',' delimiter
@@ -421,9 +451,17 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  const getOrder = (a, b) => (a < b ? -1 : 1);
+
+  return arr.sort((a, b) => {
+    if (a.country === b.country) {
+      return getOrder(a.city, b.city);
+    }
+    return getOrder(a.country, b.country);
+  });
 }
+
 
 /**
  * Creates an identity matrix of the specified size
@@ -443,8 +481,14 @@ function sortCitiesArray(/* arr */) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  const getRow = (length, rowIndex) => Array(length)
+    .fill(0)
+    .map((_el, index) => (rowIndex === index ? 1 : 0));
+
+  return Array(n)
+    .fill([])
+    .map((_rowEl, rowIndex) => getRow(n, rowIndex));
 }
 
 /**
@@ -460,8 +504,10 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  return Array(end - start + 1)
+    .fill(null)
+    .map((_el, index) => index + start);
 }
 
 /**
@@ -511,8 +557,15 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  return array.reduce((acc, el) => {
+    const key = keySelector(el);
+    const value = acc.get(key);
+    if (value) { value.push(valueSelector(el)); }
+    if (!value) { acc.set(key, [valueSelector(el)]); }
+
+    return acc;
+  }, new Map());
 }
 
 
@@ -546,8 +599,11 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  if (indexes.length > 1) {
+    return getElementByIndexes(arr[indexes[0]], indexes.slice(1));
+  }
+  return arr[indexes[0]];
 }
 
 
@@ -569,8 +625,13 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length < 2) { return arr; }
+  const halfCount = Math.floor(arr.length / 2);
+  const arrCopy = arr.slice();
+  const head = arrCopy.splice(0, halfCount);
+  const tail = arrCopy.splice(-halfCount);
+  return [...tail, ...arrCopy, ...head];
 }
 
 
