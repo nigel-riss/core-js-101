@@ -177,8 +177,13 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const chars = str.split('');
+  for (let i = 0; i < chars.length; i += 1) {
+    const charCount = chars.filter((el) => el === chars[i]).length;
+    if (charCount === 1) return chars[i];
+  }
+  return null;
 }
 
 
@@ -245,8 +250,8 @@ function reverseString(str) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -288,8 +293,16 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let sum = 0;
+  let currNum = num;
+
+  while (currNum > 0) {
+    sum += currNum % 10;
+    currNum = Math.floor(currNum / 10);
+  }
+
+  return sum < 10 ? sum : getDigitalRoot(sum);
 }
 
 
