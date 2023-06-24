@@ -129,8 +129,6 @@ function angleBetweenClockHands(date) {
   return angleBetween * radiansInAngle;
 }
 
-// console.log(angleBetweenClockHands(new Date(Date.UTC(2016, 3, 5, 21, 0))));
-
 
 module.exports = {
   parseDataFromRfc2822,
