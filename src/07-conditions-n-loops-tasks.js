@@ -369,10 +369,22 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
-}
+function getCommonDirectoryPath(paths) {
+  let commonPath = '';
+  const formatedPaths = paths.map((path) => path.split('/'));
+  const shortestLength = formatedPaths
+    .reduce((length, path) => Math.min(length, path.length), Number.MAX_SAFE_INTEGER);
 
+  for (let i = 0; i < shortestLength; i += 1) {
+    const commonPaths = formatedPaths.filter((path) => path[i] === formatedPaths[0][i]);
+    if (commonPaths.length < formatedPaths.length) {
+      return commonPath;
+    }
+    commonPath += `${formatedPaths[0][i]}/`;
+  }
+
+  return commonPath;
+}
 
 /**
  * Returns the product of two specified matrixes.
