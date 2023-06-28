@@ -483,8 +483,24 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const rows = position.slice();
+  const cols = [0, 1, 2].map((col) => position.map((row) => row[col]));
+  const diagonal1 = position.map((row, i) => row[i]);
+  const diagonal2 = position.map((row, i) => row[2 - i]);
+
+  const checks = [
+    ...rows,
+    ...cols,
+    diagonal1,
+    diagonal2,
+  ];
+
+  const winner = checks
+    .map((check) => check.join(''))
+    .find((check) => check === 'XXX' || check === '000');
+
+  return winner ? winner[0] : undefined;
 }
 
 
