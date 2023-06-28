@@ -275,8 +275,23 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let sum = 0;
+  const payload = `${ccn}`;
+  let isEven = true;
+  const lastDigit = +payload[payload.length - 1];
+
+  for (let i = payload.length - 2; i >= 0; i -= 1) {
+    let digit = +payload[i];
+    if (isEven) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+    sum += digit;
+    isEven = !isEven;
+  }
+
+  return lastDigit === (10 - (sum % 10)) % 10;
 }
 
 /**
@@ -327,8 +342,24 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = {
+    '[': ']',
+    '{': '}',
+    '(': ')',
+    '<': '>',
+  };
+  const stack = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (brackets[str[i]]) {
+      stack.push(brackets[str[i]]);
+    } else if (stack.pop() !== str[i]) {
+      return false;
+    }
+  }
+
+  return stack.length === 0;
 }
 
 
@@ -404,10 +435,23 @@ function getCommonDirectoryPath(paths) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
-}
+function getMatrixProduct(m1, m2) {
+  const productRows = m1.length;
+  const productCols = m2[0].length;
+  const matrixProduct = Array(productRows)
+    .fill(null)
+    .map(() => Array(productCols).fill(0));
 
+  for (let row = 0; row < productRows; row += 1) {
+    for (let col = 0; col < productCols; col += 1) {
+      for (let n = 0; n < m1[0].length; n += 1) {
+        matrixProduct[row][col] += (m1[row][n] * m2[n][col]);
+      }
+    }
+  }
+
+  return matrixProduct;
+}
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
